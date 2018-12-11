@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include "greed.hpp"
+#include "dp.hpp"
 using namespace std;
 using namespace chrono;
 
@@ -24,7 +25,8 @@ int main(int argc, char const* argv[]) {
     }
   }
   auto start = system_clock::now();
-  greed(facilityCount, customerCount, facility, customerDemand, customerCost);
+  // greed(facilityCount, customerCount, facility, customerDemand, customerCost);
+  dp(facilityCount, customerCount, facility, customerDemand, customerCost);
   auto end = system_clock::now();
   auto duration = duration_cast<microseconds>(end - start);
   cout << "Spend: "

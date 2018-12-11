@@ -64,8 +64,8 @@ void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
   }
 }
 
-void greed(int facilityCount, int customerCount, int facility[][2],
-           int customerDemand[], int** customerCost) {
+void dp(int facilityCount, int customerCount, int facility[][2],
+        int customerDemand[], int** customerCost) {
   minCost = -1;
   minFacilityState = new int[facilityCount];
   minCustomerState = new int[customerCount];
