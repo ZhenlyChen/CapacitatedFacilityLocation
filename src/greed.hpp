@@ -1,5 +1,5 @@
 #ifndef GREED_HPP
 #define GREED_HPP
 
-void hello();
+void greed(int facilityCount, int customerCount, int facility[][2], int customerDemand[], int** customerCost);
 #endif

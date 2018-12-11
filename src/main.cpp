@@ -1,9 +1,11 @@
+#include <chrono>
 #include <cstdio>
 #include <iostream>
 #include "greed.hpp"
 using namespace std;
+using namespace chrono;
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const* argv[]) {
   int facilityCount, customerCount;
   cin >> facilityCount >> customerCount;
   int facility[facilityCount][2];
@@ -14,14 +16,21 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < customerCount; i++) {
     scanf("%d.", &customerDemand[i]);
   }
-  int customerCost[customerCount][facilityCount];
+  int** customerCost = new int*[customerCount];
   for (int i = 0; i < customerCount; i++) {
+    customerCost[i] = new int[facilityCount];
     for (int j = 0; j < facilityCount; j++) {
       scanf("%d.", &customerCost[i][j]);
     }
   }
-  hello();
-
+  auto start = system_clock::now();
+  greed(facilityCount, customerCount, facility, customerDemand, customerCost);
+  auto end = system_clock::now();
+  auto duration = duration_cast<microseconds>(end - start);
+  cout << "Spend: "
+       << double(duration.count()) * microseconds::period::num /
+              microseconds::period::den
+       << "s" << endl;
 
   return 0;
 }
