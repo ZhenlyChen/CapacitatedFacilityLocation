@@ -1,32 +1,26 @@
 #include <cstring>
-#include <iostream>
 #include <functional>
+#include <iostream>
 using namespace std;
 
 size_t minCost;
 int* minFacilityState;
 int* minCustomerState;
+int totalCustomerDemand;
 
-// 根据性价比选择
-void makeState(int facilityCount, int customerCount, int facility[][2],
-           int customerDemand[], int** customerCost) {
-
+void makeState(int* state, int current, int num, function<void(int*)> func) {
+  if (current == num) {
+    int* newState = new int[num];
+    memcpy(newState, state, num * sizeof(int));
+    func(newState);
+    delete newState;
+  } else {
+    state[current] = 0;
+    makeState(state, current + 1, num, func);
+    state[current] = 1;
+    makeState(state, current + 1, num, func);
+  }
 }
-
-// 递归生成所有状态
-// void makeState(int* state, int current, int num, function<void(int*)> func) {
-//   if (current == num) {
-//     int* newState = new int[num];
-//     memcpy(newState, state, num * sizeof(int));
-//     func(newState);
-//     delete newState;
-//   } else {
-//     state[current] = 0;
-//     makeState(state, current + 1, num, func);
-//     state[current] = 1;
-//     makeState(state, current + 1, num, func);
-//   }
-// }
 
 void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
                    int customerDemand[], int** customerCost,
@@ -38,10 +32,6 @@ void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
     currentCap[i] = facilityState[i] * facility[i][0];
     currentCost += facilityState[i] * facility[i][1];
     totalCap += currentCap[i];
-  }
-  int totalCustomerDemand = 0;
-  for (int i = 0; i < customerCount; i++) {
-    totalCustomerDemand += customerDemand[i];
   }
   if (totalCap < totalCustomerDemand) {
     return;
@@ -76,15 +66,24 @@ void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
 
 void greed(int facilityCount, int customerCount, int facility[][2],
            int customerDemand[], int** customerCost) {
-  int* facilityState = new int[facilityCount];
-  memset(facilityState, 0, facilityCount * sizeof(int));
   minCost = -1;
   minFacilityState = new int[facilityCount];
   minCustomerState = new int[customerCount];
-  // makeState(facilityState, 0, facilityCount, [&](int* facilityState)->void {
-  //   EstimatedCost(facilityCount, customerCount, facility, customerDemand,
-  //                 customerCost, facilityState);
-  // });
+
+  int* facilityState = new int[facilityCount];
+  memset(facilityState, 0, facilityCount * sizeof(int));
+
+  // 总需求
+  int totalCustomerDemand = 0;
+  for (int i = 0; i < customerCount; i++) {
+    totalCustomerDemand += customerDemand[i];
+  }
+
+  makeState(facilityState, 0, facilityCount, [&](int* facilityState)->void {
+    EstimatedCost(facilityCount, customerCount, facility, customerDemand,
+                  customerCost, facilityState);
+  });
+
   cout << minCost << endl;
   for (int i = 0; i < facilityCount; i++) {
     cout << minFacilityState[i] << " ";
