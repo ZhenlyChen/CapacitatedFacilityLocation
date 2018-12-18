@@ -6,7 +6,7 @@ SRC_DIR := src
 
 $(BIN_DIR)/main: $(BUL_DIR)/main.o \
 					$(BUL_DIR)/greed.o\
-					$(BUL_DIR)/dp.o
+					$(BUL_DIR)/randomGreedy.o
 	$(CC) $(FLAGS) $^ -o $@
 
 $(BUL_DIR)/%.o: $(SRC_DIR)/%.cpp

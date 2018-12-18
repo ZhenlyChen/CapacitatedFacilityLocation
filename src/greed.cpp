@@ -8,12 +8,19 @@ static int* minFacilityState;
 static int* minCustomerState;
 static int totalCustomerDemand;
 
-void makeState(int* state, int current, int num, function<void(int*)> func) {
+namespace greedyFunc {
+  void makeState(int* state, int current, int num, function<void(int*)> func);
+  void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
+                   int customerDemand[], int** customerCost,
+                   int* facilityState);
+}
+
+void greedyFunc::makeState(int* state, int current, int num, function<void(int*)> func) {
   if (current == num) {
-    int* newState = new int[num];
-    memcpy(newState, state, num * sizeof(int));
-    func(newState);
-    delete newState;
+    // int* newState = new int[num];
+    // memcpy(newState, state, num * sizeof(int));
+    func(state);
+    // delete newState;
   } else {
     state[current] = 0;
     makeState(state, current + 1, num, func);
@@ -22,7 +29,7 @@ void makeState(int* state, int current, int num, function<void(int*)> func) {
   }
 }
 
-void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
+void greedyFunc::EstimatedCost(int facilityCount, int customerCount, int facility[][2],
                    int customerDemand[], int** customerCost,
                    int* facilityState) {
   int totalCap = 0;
@@ -79,8 +86,8 @@ void greed(int facilityCount, int customerCount, int facility[][2],
     totalCustomerDemand += customerDemand[i];
   }
 
-  makeState(facilityState, 0, facilityCount, [&](int* facilityState) -> void {
-    EstimatedCost(facilityCount, customerCount, facility, customerDemand,
+  greedyFunc::makeState(facilityState, 0, facilityCount, [&](int* facilityState) -> void {
+    greedyFunc::EstimatedCost(facilityCount, customerCount, facility, customerDemand,
                   customerCost, facilityState);
   });
 
