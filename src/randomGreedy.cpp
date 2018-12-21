@@ -34,7 +34,7 @@ void randomGreedyFunc::makeState(int* state, int len, function<bool(int*)> func)
         count++;
       }
     }
-    if (count > 200) {
+    if (count > 500) {
       break;
     }
   }
