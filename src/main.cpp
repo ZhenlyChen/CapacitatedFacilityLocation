@@ -19,13 +19,17 @@ int main(int argc, char const* argv[]) {
   int** customerCost = new int*[customerCount];
   for (int i = 0; i < customerCount; i++) {
     customerCost[i] = new int[facilityCount];
-    for (int j = 0; j < facilityCount; j++) {
+  }
+  for (int j = 0; j < facilityCount; j++) {
+    for (int i = 0; i < customerCount; i++) {
       scanf("%d.", &customerCost[i][j]);
     }
   }
   auto start = system_clock::now();
-  // greed(facilityCount, customerCount, facility, customerDemand, customerCost);
-  hillClimbing(facilityCount, customerCount, facility, customerDemand, customerCost);
+  // greed(facilityCount, customerCount, facility, customerDemand,
+  // customerCost);
+  SA(facilityCount, customerCount, facility, customerDemand,
+               customerCost);
   auto end = system_clock::now();
   auto duration = duration_cast<microseconds>(end - start);
   cout << "Spend: "
@@ -33,12 +37,10 @@ int main(int argc, char const* argv[]) {
               microseconds::period::den
        << "s" << endl;
 
-
   // start = system_clock::now();
-  // greedy(facilityCount, customerCount, facility, customerDemand, customerCost);
-  // end = system_clock::now();
-  // duration = duration_cast<microseconds>(end - start);
-  // cout << "Spend: "
+  // hillClimbing(facilityCount, customerCount, facility, customerDemand,
+  // customerCost); end = system_clock::now(); duration =
+  // duration_cast<microseconds>(end - start); cout << "Spend: "
   //      << double(duration.count()) * microseconds::period::num /
   //             microseconds::period::den
   //      << "s" << endl;
