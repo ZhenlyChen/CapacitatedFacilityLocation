@@ -1,10 +1,6 @@
 #include <cstring>
 #include <functional>
 #include <iostream>
-#include <algorithm>
-#include <vector>
-#include<random>
-#include<ctime>
 using namespace std;
 
 static size_t minCost;
@@ -12,35 +8,59 @@ static int* minFacilityState;
 static int* minCustomerState;
 static int totalCustomerDemand;
 
-namespace randomGreedyFunc {
-  void makeState(int* state, int len, function<bool(int*)> func);
-  bool EstimatedCost(int facilityCount, int customerCount, int facility[][2],
-                   int customerDemand[], int** customerCost, int* facilityState);
-};
+namespace greedyFunc {
+  void makeState(int* state, int current, int num, function<void(int*)> func);
+  void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
+                   int customerDemand[], int** customerCost,
+                   int* facilityState);
+  size_t calcCost(int facilityCount, int customerCount,
+              int facility[][2], int* customerDemand,
+              int** customerCost, int* facilityState,
+              int* customerState);
+}
 
-void randomGreedyFunc::makeState(int* state, int len, function<bool(int*)> func) {
-  int count = 0;
-  default_random_engine random(time(NULL));
-  uniform_int_distribution<int> disInt(0, len - 1);
-  while (true) {
-    int i = disInt(random);
-    state[i] = state[i] == 0 ? 1 : 0;
-    size_t lastCost = minCost;
-    bool success = func(state);
-    if (success) {
-      if (lastCost < minCost) {
-        count = 0;
-      } else {
-        count++;
-      }
+
+size_t greedyFunc::calcCost(int facilityCount, int customerCount,
+                               int facility[][2], int* customerDemand,
+                               int** customerCost, int* facilityState,
+                               int* customerState) {
+  int totalCap = 0;
+  size_t currentCost = 0;
+  int currentCap[facilityCount];
+  for (int i = 0; i < facilityCount; i++) {
+    currentCap[i] = facilityState[i] * facility[i][0];
+    currentCost += facilityState[i] * facility[i][1];
+    totalCap += currentCap[i];
+  }
+  if (totalCap < totalCustomerDemand) {
+    return -1;
+  }
+  for (int i = 0; i < customerCount; i++) {
+    int facilityIndex = customerState[i];
+    currentCost += customerCost[i][facilityIndex];
+    currentCap[facilityIndex] -= customerDemand[i];
+    if (currentCap[facilityIndex] < 0) {
+      return -1;
     }
-    if (count > 500) {
-      break;
-    }
+  }
+  return currentCost;
+}
+
+void greedyFunc::makeState(int* state, int current, int num, function<void(int*)> func) {
+  if (current == num) {
+    // int* newState = new int[num];
+    // memcpy(newState, state, num * sizeof(int));
+    func(state);
+    // delete newState;
+  } else {
+    state[current] = 0;
+    makeState(state, current + 1, num, func);
+    state[current] = 1;
+    makeState(state, current + 1, num, func);
   }
 }
 
-bool randomGreedyFunc::EstimatedCost(int facilityCount, int customerCount, int facility[][2],
+void greedyFunc::EstimatedCost(int facilityCount, int customerCount, int facility[][2],
                    int customerDemand[], int** customerCost,
                    int* facilityState) {
   int totalCap = 0;
@@ -52,7 +72,7 @@ bool randomGreedyFunc::EstimatedCost(int facilityCount, int customerCount, int f
     totalCap += currentCap[i];
   }
   if (totalCap < totalCustomerDemand) {
-    return false;
+    return;
   }
   int customerState[customerCount];
   memset(customerState, 0, customerCount * sizeof(int));
@@ -68,7 +88,7 @@ bool randomGreedyFunc::EstimatedCost(int facilityCount, int customerCount, int f
       }
     }
     if (minIndex == -1) {
-      return false;
+      return;
     } else {
       currentCost += customerCost[i][minIndex];
       currentCap[minIndex] -= customerDemand[i];
@@ -80,10 +100,9 @@ bool randomGreedyFunc::EstimatedCost(int facilityCount, int customerCount, int f
     memcpy(minFacilityState, facilityState, facilityCount * sizeof(int));
     memcpy(minCustomerState, customerState, customerCount * sizeof(int));
   }
-  return true;
 }
 
-void randomGreedy(int facilityCount, int customerCount, int facility[][2],
+void greedy(int facilityCount, int customerCount, int facility[][2],
            int customerDemand[], int** customerCost) {
   minCost = -1;
   minFacilityState = new int[facilityCount];
@@ -98,8 +117,8 @@ void randomGreedy(int facilityCount, int customerCount, int facility[][2],
     totalCustomerDemand += customerDemand[i];
   }
 
-  randomGreedyFunc::makeState(facilityState, facilityCount, [&](int* facilityState) -> bool {
-    return randomGreedyFunc::EstimatedCost(facilityCount, customerCount, facility, customerDemand,
+  greedyFunc::makeState(facilityState, 0, facilityCount, [&](int* facilityState) -> void {
+    greedyFunc::EstimatedCost(facilityCount, customerCount, facility, customerDemand,
                   customerCost, facilityState);
   });
 
