@@ -76,8 +76,6 @@ bool hillClimbingFunc::EstimatedCost(int facilityCount, int customerCount,
   memset(customerState, 0, customerCount * sizeof(int));
 
   for (int i = 0; i < customerCount; i++) {
-    // int i = sortDemand[k].second;
-    // cout << i << "-" << sortDemand[k].first << "; ";
     int minIndex = -1;
     for (int j = 0; j < facilityCount; j++) {
       if (currentCap[j] - customerDemand[i] > 0) {
@@ -99,7 +97,6 @@ bool hillClimbingFunc::EstimatedCost(int facilityCount, int customerCount,
 
   // 是否继续变换
   if (((float)currentCost / (float)minCost) < 1.15) {
-    // cout << (float)currentCost / (float)minCost << endl;
     default_random_engine random(time(NULL));
     uniform_int_distribution<int> disInt(0, customerCount - 1);
     uniform_int_distribution<int> disCounts(1, 3);
