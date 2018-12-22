@@ -35,5 +35,5 @@ $ ./test/test.ps1
 
 [hillClimbing](./output_hillClimbing.txt)
 
-[SA](./output_SAtxt)
+[SA](./output_SA.txt)
 
