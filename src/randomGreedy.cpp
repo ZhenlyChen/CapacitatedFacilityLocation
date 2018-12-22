@@ -36,7 +36,7 @@ void randomGreedyFunc::makeState(int* state, int len,
         count++;
       }
     }
-    if (count > 1440) {
+    if (count > 2440) {
       break;
     }
   }
