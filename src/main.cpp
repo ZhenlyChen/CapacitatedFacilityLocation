@@ -28,7 +28,7 @@ int main(int argc, char const* argv[]) {
   auto start = system_clock::now();
   // greed(facilityCount, customerCount, facility, customerDemand,
   // customerCost);
-  SA(facilityCount, customerCount, facility, customerDemand,
+  hillClimbing(facilityCount, customerCount, facility, customerDemand,
                customerCost);
   auto end = system_clock::now();
   auto duration = duration_cast<microseconds>(end - start);

@@ -33,8 +33,8 @@ void SAFunc::makeState(int* state, int len, function<bool(int*)> func) {
     state[i] = 1;
   }
   func(state);
-  float T = 999;
-  while (T > 0.001) {
+  float T = 99;
+  while (T > 0.0001) {
     for (int i = 0; i < 8; i++) {
       int newState[len];
       memcpy(newState, state, len * sizeof(int));
@@ -116,8 +116,8 @@ bool SAFunc::EstimatedCost(int facilityCount, int customerCount,
     uniform_int_distribution<int> disFire(1, 10000);
 
     // 多重变换
-    float T = 233;
-    while (T > 0.001) {
+    float T = 99;
+    while (T > 0.0001) {
       for (int i = 0; i < 5; i++) {
         int neiState[customerCount];
         memcpy(neiState, customerState, customerCount * sizeof(int));
