@@ -13,45 +13,11 @@ namespace greedyFunc {
   void EstimatedCost(int facilityCount, int customerCount, int facility[][2],
                    int customerDemand[], int** customerCost,
                    int* facilityState);
-  size_t calcCost(int facilityCount, int customerCount,
-              int facility[][2], int* customerDemand,
-              int** customerCost, int* facilityState,
-              int* customerState);
-}
-
-
-size_t greedyFunc::calcCost(int facilityCount, int customerCount,
-                               int facility[][2], int* customerDemand,
-                               int** customerCost, int* facilityState,
-                               int* customerState) {
-  int totalCap = 0;
-  size_t currentCost = 0;
-  int currentCap[facilityCount];
-  for (int i = 0; i < facilityCount; i++) {
-    currentCap[i] = facilityState[i] * facility[i][0];
-    currentCost += facilityState[i] * facility[i][1];
-    totalCap += currentCap[i];
-  }
-  if (totalCap < totalCustomerDemand) {
-    return -1;
-  }
-  for (int i = 0; i < customerCount; i++) {
-    int facilityIndex = customerState[i];
-    currentCost += customerCost[i][facilityIndex];
-    currentCap[facilityIndex] -= customerDemand[i];
-    if (currentCap[facilityIndex] < 0) {
-      return -1;
-    }
-  }
-  return currentCost;
 }
 
 void greedyFunc::makeState(int* state, int current, int num, function<void(int*)> func) {
   if (current == num) {
-    // int* newState = new int[num];
-    // memcpy(newState, state, num * sizeof(int));
     func(state);
-    // delete newState;
   } else {
     state[current] = 0;
     makeState(state, current + 1, num, func);
