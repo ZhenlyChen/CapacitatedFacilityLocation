@@ -26,7 +26,7 @@ int main(int argc, char const* argv[]) {
     }
   }
   auto start = system_clock::now();
-  // greed(facilityCount, customerCount, facility, customerDemand, customerCost);
+  // greedy(facilityCount, customerCount, facility, customerDemand, customerCost);
   hillClimbing(facilityCount, customerCount, facility, customerDemand, customerCost);
   // randomGreedy(facilityCount, customerCount, facility, customerDemand, customerCost);
   // SA(facilityCount, customerCount, facility, customerDemand, customerCost);
