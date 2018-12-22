@@ -1,7 +1,5 @@
 # Capacitated Facility Location Problem
 
-
-
 ## Usage
 
 ### Algorithm
@@ -37,3 +35,6 @@ $ ./test/test.ps1
 
 [SA](./output_SA.txt)
 
+### Design
+
+[Report](./docs/Report.md)
