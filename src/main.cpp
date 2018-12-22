@@ -28,7 +28,7 @@ int main(int argc, char const* argv[]) {
   auto start = system_clock::now();
   // greed(facilityCount, customerCount, facility, customerDemand,
   // customerCost);
-  hillClimbing(facilityCount, customerCount, facility, customerDemand,
+  greedy(facilityCount, customerCount, facility, customerDemand,
                customerCost);
   auto end = system_clock::now();
   auto duration = duration_cast<microseconds>(end - start);
@@ -38,7 +38,7 @@ int main(int argc, char const* argv[]) {
        << "s" << endl;
 
   // start = system_clock::now();
-  // hillClimbing(facilityCount, customerCount, facility, customerDemand,
+  // randomGreedy(facilityCount, customerCount, facility, customerDemand,
   // customerCost); end = system_clock::now(); duration =
   // duration_cast<microseconds>(end - start); cout << "Spend: "
   //      << double(duration.count()) * microseconds::period::num /
