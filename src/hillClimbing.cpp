@@ -98,7 +98,7 @@ bool hillClimbingFunc::EstimatedCost(int facilityCount, int customerCount,
   }
 
   // 是否继续变换
-  if (((float)currentCost / (float)minCost) < 1.1) {
+  if (((float)currentCost / (float)minCost) < 1.15) {
     // cout << (float)currentCost / (float)minCost << endl;
     default_random_engine random(time(NULL));
     uniform_int_distribution<int> disInt(0, customerCount - 1);

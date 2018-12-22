@@ -7,7 +7,6 @@ SRC_DIR := src
 $(BIN_DIR)/main: $(BUL_DIR)/main.o\
 					$(BUL_DIR)/greedy.o\
 					$(BUL_DIR)/SA.o\
-					$(BUL_DIR)/GA.o\
 					$(BUL_DIR)/hillClimbing.o\
 					$(BUL_DIR)/randomGreedy.o
 	$(CC) $(FLAGS) $^ -o $@
